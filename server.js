@@ -7,6 +7,7 @@ const app = express();
 
 
 
+// Function to filter anumals by query
 function filterByQuery(query, animalsArray) {
     let personalityTraitsArray = [];
     
@@ -44,6 +45,16 @@ function filterByQuery(query, animalsArray) {
 
 
 
+// Function to filter animals by ID
+function findById(id, animalsArray) {
+    const result = animalsArray.filter(animal => animal.id === id)[0];
+
+    return result;
+};
+
+
+
+// Route to get animals by query
 app.get('/api/animals', (req, res) => {
     let results = animals;
 
@@ -51,6 +62,20 @@ app.get('/api/animals', (req, res) => {
         results = filterByQuery(req.query, results);
     }
     res.json(results);
+});
+
+
+
+// Route to get animals by ID only
+app.get('/api/animals/:id', (req, res) => {
+    const result = findById(req.params.id, animals);
+
+    if (result) {
+        res.json(result);
+    } else {
+        res.send(404);
+    }
+    
 });
 
 
